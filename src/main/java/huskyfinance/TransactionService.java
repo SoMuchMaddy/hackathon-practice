@@ -44,4 +44,24 @@ public class TransactionService {
     public BigDecimal getBalance() {
         return getTotalIncome().subtract(getTotalExpenses());
     }
+
+    public void validateTransaction(Transaction transaction) {
+        if (transaction.getDescription() == null ||
+                transaction.getDescription().isBlank()) {
+            throw new IllegalArgumentException(
+                    "Description cannot be empty.");
+        }
+
+        if (transaction.getAmount() == null ||
+                transaction.getAmount().signum() <= 0) {
+            throw new IllegalArgumentException(
+                    "Amount must be greater than zero.");
+        }
+
+        if (!"INCOME".equals(transaction.getType()) &&
+                !"EXPENSE".equals(transaction.getType())) {
+            throw new IllegalArgumentException(
+                    "Type must be INCOME or EXPENSE.");
+        }
+    }
 }

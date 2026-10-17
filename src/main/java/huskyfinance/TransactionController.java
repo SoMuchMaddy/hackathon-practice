@@ -10,6 +10,8 @@ import java.util.Map;
 import java.math.BigDecimal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -32,6 +34,7 @@ public class TransactionController {
 
     @PostMapping
     public void addTransaction(@RequestBody Transaction transaction) {
+        service.validateTransaction(transaction);
         repository.save(transaction);
     }
 
@@ -47,5 +50,14 @@ public class TransactionController {
     @DeleteMapping("/{id}")
     public void deleteTransaction(@PathVariable int id) {
         repository.deleteById(id);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleValidationError(
+            IllegalArgumentException exception) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(exception.getMessage());
     }
 }
