@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>HuskyFinance</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <h1>Welcome to HuskyFinance!</h1>
 <p>Our first Spring Boot webpage is working!</p>
-</body>
-</html>
 
 <h2>Financial Summary</h2>
-<p>Total Income: $<span id="total-income">0.00</span></p>
-<p>Total Expenses: $<span id="total-expenses">0.00</span></p>
-<p>Balance: $<span id="balance">0.00</span></p>
+
+<div class="summary-cards">
+    <p>Total Income: $<span id="total-income">0.00</span></p>
+    <p>Total Expenses: $<span id="total-expenses">0.00</span></p>
+    <p>Balance: $<span id="balance">0.00</span></p>
+</div>
 
 <h2>Add Transaction</h2>
 
@@ -43,6 +45,23 @@
                 const item = document.createElement('li');
                 item.textContent =
                     `${transaction.description}: $${transaction.amount} (${transaction.type})`;
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.marginLeft = '15px';
+
+                deleteButton.addEventListener('click', async () => {
+                    const response = await fetch(`/api/transactions/${transaction.id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete transaction.');
+                    }
+                });
+
+                item.appendChild(deleteButton);
                 list.appendChild(item);
             });
         });
@@ -85,3 +104,6 @@
         });
 
 </script>
+
+</body>
+</html>

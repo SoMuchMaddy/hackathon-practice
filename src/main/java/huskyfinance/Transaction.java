@@ -19,7 +19,7 @@ public class Transaction {
         this.type = type;
     }
 
-    public Integer getID() {
+    public Integer getId() {
         return id;
     }
 

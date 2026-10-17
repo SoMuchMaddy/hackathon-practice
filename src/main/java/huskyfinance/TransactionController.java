@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Map;
 import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -40,5 +42,10 @@ public class TransactionController {
                 "expenses", service.getTotalExpenses(),
                 "balance", service.getBalance()
         );
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTransaction(@PathVariable int id) {
+        repository.deleteById(id);
     }
 }

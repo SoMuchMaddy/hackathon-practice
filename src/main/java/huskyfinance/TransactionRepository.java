@@ -40,4 +40,9 @@ public class TransactionRepository {
                 )
         );
     }
+
+    public void deleteById(int id) {
+        String sql = "DELETE FROM transactions WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }
